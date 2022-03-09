@@ -11,7 +11,7 @@ from telethon import TelegramClient, events
 # Variables
 config_path = 'bot_config.json'
 data_path='data.json'
-none_data={'Никого нет -_-':'Ничего нет'}
+none_data={'1':' ','2':' ','3':' ','4':' ','5':' ','6':' ','7':' ','8':' '}
 
 
 # Read config
@@ -28,8 +28,8 @@ async def bot():
 
         @tgclient.on(events.NewMessage(pattern='/send'))
         async def handler(event):
-            global message_event
-            message_event = event.message.id+1
+            with open('message_id.txt','w') as f:
+                f.write(event.message.id+1)
             with open(data_path, 'r') as f:
                 data = json.load(f)
             message=''
@@ -52,7 +52,7 @@ async def bot():
                 with open(data_path, 'w') as f:
                     json.dump(data,f, indent=4)
             except:
-                await event.respond('Неправильный индекс сообщения')
+                await event.reply('Неправильный индекс сообщения')
             await update_message()
 
 
@@ -64,7 +64,7 @@ async def bot():
             try:
                 data.pop(msg)
             except:
-                await event.respond('Неправильный индекс сообщения')
+                await event.reply('Неправильный индекс сообщения')
             with open(data_path, 'w') as f:
                 json.dump(data, f, indent=4)
             await update_message()
@@ -73,7 +73,7 @@ async def bot():
         @tgclient.on(events.NewMessage(pattern='/clear'))
         async def handler(event):
             with open(data_path,'w') as f:
-                json.dump({'Никого нет -_-':'Ничего нет'},f)
+                json.dump(none_data,f)
             await update_message()
 
 
@@ -83,7 +83,9 @@ async def bot():
             message = ''
             for key in data.keys():
                 message += f'{key} - {data[key]}\n'
-            await tgclient.edit_message(await tgclient.get_entity('terraria_server_bot'), message_event, message)
+            with open('message_id.txt','r') as f:
+                message_id=int(f.read())
+            await tgclient.edit_message(await tgclient.get_entity('terraria_server_bot'), message_id, message)
 
 
 
