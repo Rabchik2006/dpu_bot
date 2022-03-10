@@ -8,6 +8,7 @@ __pycache__/
 
 #data.json
 bot_config.json
+message_id.txt
 
 # Distribution / packaging
 .Python

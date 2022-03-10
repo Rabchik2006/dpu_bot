@@ -45,10 +45,7 @@ async def bot():
             with open(data_path, 'r') as f:
                 data = json.load(f)
             try:
-                if data == none_data:
-                    data={msg[0]:msg[1]}
-                else:
-                    data.update({msg[0]:msg[1]})
+                data.update({msg[0]:msg[1]})
                 with open(data_path, 'w') as f:
                     json.dump(data,f, indent=4)
             except:
