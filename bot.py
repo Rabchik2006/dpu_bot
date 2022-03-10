@@ -29,7 +29,7 @@ async def bot():
         @tgclient.on(events.NewMessage(pattern='/send'))
         async def handler(event):
             with open('message_id.txt','w') as f:
-                f.write(event.message.id+1)
+                f.write(str(event.message.id+1))
             with open(data_path, 'r') as f:
                 data = json.load(f)
             message=''
